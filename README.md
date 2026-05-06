@@ -6,7 +6,7 @@ A full-stack **Project & Task Management Web Application** with authentication, 
 
 ## 🌐 Live Demo
 
-* 🔗 Live URL: *(Add after Railway deployment)*
+* 🔗 Live URL: https://team-task-manager-production-3a3e.up.railway.app
 * 📂 GitHub Repo: https://github.com/Vaijayyantiik/team-task-manager
 
 ---
