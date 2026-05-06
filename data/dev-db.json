@@ -1,0 +1,23 @@
+{
+  "users": [
+    {
+      "id": "3c798d36-6c5c-46e1-800a-ab699ada6f11",
+      "name": "Krishna Kulkarni",
+      "email": "krishnakulkarni740@gmail.com",
+      "passwordHash": "$2a$12$ysD3YpUrcNCrTtcSXsgjeeFDGsAYLNSgyZqL8hCr05Dchn4KQOmcO",
+      "role": "admin",
+      "createdAt": "2026-05-05T17:32:01.825Z"
+    },
+    {
+      "id": "3efdb940-6fd1-4fbf-b5e0-cd6c1696dbdc",
+      "name": "Krishna Kulkarni",
+      "email": "vaijayantikulkarni03@gmail.com",
+      "passwordHash": "$2a$12$Zmbu7eRJG3cZUwF1Y51q4eXyK5k4tDvegYrUAhbNAZGX6w/Kf2mAW",
+      "role": "member",
+      "createdAt": "2026-05-05T17:37:46.999Z"
+    }
+  ],
+  "projects": [],
+  "projectMembers": [],
+  "tasks": []
+}

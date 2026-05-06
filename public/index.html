@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Team Task Manager</title>
+    <script>
+      const savedTheme = localStorage.getItem('ttm_theme');
+      const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = savedTheme || preferredTheme;
+    </script>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div id="notice" class="notice" hidden></div>
+
+    <section id="authView" class="auth-view">
+      <div class="auth-shell">
+        <form id="authForm" class="auth-panel">
+          <div class="brand-block">
+            <span class="brand-mark">TT</span>
+            <div>
+              <strong>Team Task Manager</strong>
+              <span id="authRoleHint">Admin setup starts with the first account</span>
+            </div>
+          </div>
+
+          <div class="theme-toggle auth-theme-toggle" role="group" aria-label="Theme">
+            <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+            <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+          </div>
+
+          <div class="form-title">
+            <h1 id="authTitle">Login</h1>
+            <button type="button" id="switchAuthMode" class="link-button">Create account</button>
+          </div>
+
+          <label id="nameField" class="field" hidden>
+            <span>Name</span>
+            <input id="authName" name="name" autocomplete="name" maxlength="80">
+          </label>
+
+          <label class="field">
+            <span>Email</span>
+            <input id="authEmail" name="email" type="email" autocomplete="email" required maxlength="255">
+          </label>
+
+          <label class="field">
+            <span>Password</span>
+            <input id="authPassword" name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="120">
+          </label>
+
+          <button id="authSubmit" class="primary-button" type="submit">Login</button>
+        </form>
+
+        <aside class="auth-snapshot" aria-label="Workspace snapshot">
+          <div class="snapshot-row">
+            <span>Projects</span>
+            <strong>6</strong>
+          </div>
+          <div class="snapshot-row">
+            <span>In progress</span>
+            <strong>18</strong>
+          </div>
+          <div class="snapshot-row accent">
+            <span>Overdue</span>
+            <strong>3</strong>
+          </div>
+          <div class="mini-bars" aria-hidden="true">
+            <span style="height: 54%"></span>
+            <span style="height: 82%"></span>
+            <span style="height: 38%"></span>
+            <span style="height: 70%"></span>
+            <span style="height: 48%"></span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div id="appView" class="app-view" hidden>
+      <header class="topbar">
+        <div class="brand-block compact">
+          <span class="brand-mark">TT</span>
+          <div>
+            <strong>Team Task Manager</strong>
+            <span id="userSummary"></span>
+          </div>
+        </div>
+
+        <nav class="tabs" aria-label="Primary">
+          <button class="tab-button active" data-page="dashboard">Dashboard</button>
+          <button class="tab-button" data-page="projects">Projects</button>
+          <button class="tab-button" data-page="tasks">Tasks</button>
+          <button class="tab-button" data-page="team">Team</button>
+        </nav>
+
+        <div class="topbar-actions">
+          <div class="theme-toggle" role="group" aria-label="Theme">
+            <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+            <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+          </div>
+          <button id="refreshButton" class="ghost-button" type="button">Refresh</button>
+          <button id="logoutButton" class="danger-button" type="button">Logout</button>
+        </div>
+      </header>
+
+      <main class="main-shell">
+        <section id="dashboardPage" class="page active">
+          <div class="page-heading">
+            <div>
+              <h1>Dashboard</h1>
+              <p id="dashboardSubhead"></p>
+            </div>
+          </div>
+          <div id="metricGrid" class="metric-grid"></div>
+          <div class="split-layout">
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Project Progress</h2>
+              </div>
+              <div id="projectProgressList" class="progress-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Upcoming Work</h2>
+              </div>
+              <div id="upcomingList" class="task-stack compact"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="projectsPage" class="page">
+          <div class="page-heading">
+            <div>
+              <h1>Projects</h1>
+              <p id="projectCount"></p>
+            </div>
+          </div>
+
+          <form id="projectForm" class="inline-form admin-only">
+            <label class="field">
+              <span>Name</span>
+              <input id="projectName" maxlength="120" required>
+            </label>
+            <label class="field grow">
+              <span>Description</span>
+              <input id="projectDescription" maxlength="1500">
+            </label>
+            <label class="field slim">
+              <span>Status</span>
+              <select id="projectStatus">
+                <option value="active">Active</option>
+                <option value="on_hold">On hold</option>
+                <option value="completed">Completed</option>
+              </select>
+            </label>
+            <button class="primary-button" type="submit">Add Project</button>
+          </form>
+
+          <div class="split-layout wide-first">
+            <section class="panel">
+              <div id="projectList" class="project-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <h2>Members</h2>
+                <select id="projectDetailsSelect"></select>
+              </div>
+              <form id="memberForm" class="member-form admin-only">
+                <select id="memberUserSelect" required></select>
+                <select id="memberRoleSelect">
+                  <option value="member">Member</option>
+                  <option value="owner">Owner</option>
+                </select>
+                <button class="primary-button" type="submit">Add</button>
+              </form>
+              <div id="projectMembers" class="member-list"></div>
+            </section>
+          </div>
+        </section>
+
+        <section id="tasksPage" class="page">
+          <div class="page-heading">
+            <div>
+              <h1>Tasks</h1>
+              <p id="taskCount"></p>
+            </div>
+          </div>
+
+          <form id="taskForm" class="task-form admin-only">
+            <label class="field">
+              <span>Project</span>
+              <select id="taskProject" required></select>
+            </label>
+            <label class="field grow">
+              <span>Title</span>
+              <input id="taskTitle" maxlength="140" required>
+            </label>
+            <label class="field">
+              <span>Assignee</span>
+              <select id="taskAssignee"></select>
+            </label>
+            <label class="field">
+              <span>Due</span>
+              <input id="taskDueDate" type="date">
+            </label>
+            <label class="field slim">
+              <span>Priority</span>
+              <select id="taskPriority">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <label class="field slim">
+              <span>Status</span>
+              <select id="taskStatus">
+                <option value="todo">To do</option>
+                <option value="in_progress">In progress</option>
+                <option value="done">Done</option>
+              </select>
+            </label>
+            <label class="field full">
+              <span>Description</span>
+              <textarea id="taskDescription" maxlength="2000"></textarea>
+            </label>
+            <button class="primary-button" type="submit">Add Task</button>
+          </form>
+
+          <div class="filter-row">
+            <select id="filterProject">
+              <option value="">All projects</option>
+            </select>
+            <select id="filterStatus">
+              <option value="">All statuses</option>
+              <option value="todo">To do</option>
+              <option value="in_progress">In progress</option>
+              <option value="done">Done</option>
+            </select>
+            <select id="filterAssignee">
+              <option value="">All assignees</option>
+              <option value="me">Assigned to me</option>
+            </select>
+          </div>
+
+          <div id="taskList" class="task-stack"></div>
+        </section>
+
+        <section id="teamPage" class="page">
+          <div class="page-heading">
+            <div>
+              <h1>Team</h1>
+              <p id="teamCount"></p>
+            </div>
+          </div>
+          <section class="panel">
+            <div id="teamTable" class="table-wrap"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
