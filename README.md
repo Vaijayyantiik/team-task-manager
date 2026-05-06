@@ -1,88 +1,249 @@
-# Team Task Manager
+# 🚀 Team Task Manager
 
-A full-stack project and task management app with authentication, project teams, task assignment, status tracking, dashboard metrics, and role-based access control.
+A full-stack **Project & Task Management Web Application** with authentication, role-based access control, project collaboration, and real-time task tracking.
 
-## Features
+---
 
-- Signup and login with hashed passwords and JWT sessions.
-- First registered user becomes an Admin; later users start as Members.
-- Admins can create projects, add/remove project members, create tasks, assign users, and manage roles.
-- Members can view projects they belong to and update the status of tasks assigned to them.
-- Dashboard tracks total tasks, status counts, overdue work, personal open tasks, and project progress.
-- REST API with validation, relationships, and access checks.
-- PostgreSQL support for Railway production deployment.
-- Local JSON-backed development storage when `DATABASE_URL` is not configured.
+## 🌐 Live Demo
 
-## Tech Stack
+* 🔗 Live URL: *(Add after Railway deployment)*
+* 📂 GitHub Repo: https://github.com/Vaijayyantiik/team-task-manager
 
-- Node.js
-- Express
-- PostgreSQL with `pg`
-- bcryptjs
-- JSON Web Tokens
-- Zod validation
-- Vanilla HTML, CSS, and JavaScript frontend
+---
 
-## Local Setup
+## 📌 Overview
 
-```bash
+Team Task Manager allows teams to:
+
+* Create and manage projects
+* Assign tasks to members
+* Track progress with dashboards
+* Enforce secure role-based access
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Security
+
+* User Signup & Login
+* Password hashing using bcrypt
+* JWT-based authentication
+* Secure API access
+
+---
+
+### 👥 Role-Based Access Control
+
+* First registered user → **Admin**
+* Other users → **Members**
+* Admin permissions:
+
+  * Create/Delete projects
+  * Add/remove members
+  * Assign tasks
+  * Manage user roles
+* Member permissions:
+
+  * View assigned projects
+  * Update task status
+
+---
+
+### 📁 Project Management
+
+* Create, update, delete projects
+* Add/remove team members
+* View project details
+
+---
+
+### 📌 Task Management
+
+* Create and assign tasks
+* Track task status:
+
+  * Todo
+  * In Progress
+  * Done
+* Set deadlines
+* Update task progress
+
+---
+
+### 📊 Dashboard
+
+* Total tasks
+* Completed tasks
+* Pending tasks
+* Overdue tasks
+* Personal assigned tasks
+* Project-wise progress
+
+---
+
+### ⚙️ Backend Features
+
+* RESTful API architecture
+* Input validation using Zod
+* Proper data relationships
+* Access control middleware
+
+---
+
+### 🗄️ Database Support
+
+* PostgreSQL (Production - Railway)
+* JSON-based local storage (Development fallback)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer          | Technology            |
+| -------------- | --------------------- |
+| Frontend       | HTML, CSS, JavaScript |
+| Backend        | Node.js, Express      |
+| Database       | PostgreSQL (`pg`)     |
+| Authentication | JWT, bcryptjs         |
+| Validation     | Zod                   |
+| Deployment     | Railway               |
+
+---
+
+## 📂 Project Structure
+
+```
+team-task-manager/
+│
+├── src/            # Backend logic
+├── public/         # Frontend files
+├── data/           # Local JSON database
+├── test/           # API tests
+├── .env.example
+├── package.json
+├── railway.json
+└── README.md
+```
+
+---
+
+## ⚙️ Local Setup
+
+### 1️⃣ Clone Repository
+
+```
+git clone https://github.com/Vaijayyantiik/team-task-manager.git
+cd team-task-manager
+```
+
+### 2️⃣ Install Dependencies
+
+```
 npm install
+```
+
+### 3️⃣ Setup Environment
+
+```
 cp .env.example .env
+```
+
+### 4️⃣ Run Application
+
+```
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+👉 Open: http://localhost:3000
 
-The app uses `data/dev-db.json` locally if `DATABASE_URL` is empty. For PostgreSQL, set `DATABASE_URL` in `.env`; tables are created automatically when the server starts.
+---
 
-## Default Role Flow
+## 🧠 Default Role Flow
 
-1. Create the first account. It becomes `admin`.
-2. Create additional accounts. They become `member`.
-3. Login as Admin to create projects, add members, assign tasks, and update roles.
+1. First registered user → **Admin**
+2. Next users → **Members**
+3. Admin manages:
 
-## API Overview
+   * Projects
+   * Members
+   * Tasks
 
-| Method | Route | Access | Purpose |
-| --- | --- | --- | --- |
-| `POST` | `/api/auth/signup` | Public | Create account |
-| `POST` | `/api/auth/login` | Public | Login |
-| `GET` | `/api/auth/me` | Authenticated | Current user |
-| `GET` | `/api/dashboard` | Authenticated | Dashboard metrics |
-| `GET` | `/api/users` | Authenticated | Visible users |
-| `PATCH` | `/api/users/:id/role` | Admin | Update user role |
-| `GET` | `/api/projects` | Authenticated | Visible projects |
-| `POST` | `/api/projects` | Admin | Create project |
-| `GET` | `/api/projects/:id` | Project access | Project details and members |
-| `PATCH` | `/api/projects/:id` | Admin | Update project |
-| `DELETE` | `/api/projects/:id` | Admin | Delete project |
-| `POST` | `/api/projects/:id/members` | Admin | Add/update member |
-| `DELETE` | `/api/projects/:id/members/:userId` | Admin | Remove member |
-| `GET` | `/api/tasks` | Authenticated | Visible tasks |
-| `POST` | `/api/tasks` | Admin | Create task |
-| `PATCH` | `/api/tasks/:id` | Admin or assigned member | Update task |
-| `DELETE` | `/api/tasks/:id` | Admin | Delete task |
+---
 
-## Railway Deployment
+## 🔗 API Overview
 
-1. Push this project to a GitHub repository.
-2. In Railway, create a new project from the GitHub repo.
-3. Add a PostgreSQL database to the Railway project.
-4. Set these service variables:
-   - `JWT_SECRET`: a long random value.
-   - `DATABASE_URL`: reference the PostgreSQL database variable if Railway does not attach it automatically.
-5. Railway can use the included `railway.json`; the start command is `npm start`.
-6. Generate a public domain from the service networking settings.
-7. Visit the live URL and create the first account.
+| Method | Endpoint                            | Access       | Description       |
+| ------ | ----------------------------------- | ------------ | ----------------- |
+| POST   | `/api/auth/signup`                  | Public       | Register user     |
+| POST   | `/api/auth/login`                   | Public       | Login             |
+| GET    | `/api/auth/me`                      | Auth         | Current user      |
+| GET    | `/api/dashboard`                    | Auth         | Dashboard metrics |
+| GET    | `/api/users`                        | Auth         | Get users         |
+| PATCH  | `/api/users/:id/role`               | Admin        | Update role       |
+| GET    | `/api/projects`                     | Auth         | Get projects      |
+| POST   | `/api/projects`                     | Admin        | Create project    |
+| GET    | `/api/projects/:id`                 | Access       | Project details   |
+| PATCH  | `/api/projects/:id`                 | Admin        | Update project    |
+| DELETE | `/api/projects/:id`                 | Admin        | Delete project    |
+| POST   | `/api/projects/:id/members`         | Admin        | Add member        |
+| DELETE | `/api/projects/:id/members/:userId` | Admin        | Remove member     |
+| GET    | `/api/tasks`                        | Auth         | Get tasks         |
+| POST   | `/api/tasks`                        | Admin        | Create task       |
+| PATCH  | `/api/tasks/:id`                    | Admin/Member | Update task       |
+| DELETE | `/api/tasks/:id`                    | Admin        | Delete task       |
 
-Railway references:
+---
 
-- PostgreSQL database variables: https://docs.railway.com/guides/postgresql
-- Start command behavior: https://docs.railway.com/guides/start-command
-- Build and deploy concepts: https://docs.railway.com/build-deploy
+## 🚀 Deployment (Railway)
 
-## Submission
+1. Push code to GitHub
+2. Open Railway → New Project
+3. Deploy from GitHub repo
+4. Add PostgreSQL database
+5. Set environment variables:
 
-- Live URL: add after Railway deployment
-- GitHub repo: add after pushing to GitHub
-- README: this file
+```
+JWT_SECRET=your_secret_key
+DATABASE_URL=your_database_url
+```
+
+6. Deploy and generate public domain
+
+---
+
+## 📸 Screenshots *(Optional but Recommended)*
+
+* Login Page
+* Dashboard
+* Project Page
+* Task Management
+
+---
+
+## 📦 Submission
+
+* 🌐 Live URL: https://team-task-manager-production-3a3e.up.railway.app
+* 📂 GitHub Repo: https://github.com/Vaijayyantiik/team-task-manager
+
+
+---
+
+## 💡 Future Improvements
+
+* Drag & Drop Kanban Board
+* Email Notifications
+* Dark Mode UI
+* Advanced Filters & Search
+
+---
+
+## 👩‍💻 Author
+
+**Vaijayanti Kulkarni**
+
+* GitHub: https://github.com/Vaijayyantiik
+
+---
+
+## ⭐ If you like this project, give it a star!
