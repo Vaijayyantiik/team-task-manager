@@ -246,4 +246,3 @@ DATABASE_URL=your_database_url
 
 ---
 
-## ⭐ If you like this project, give it a star!
